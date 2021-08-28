@@ -1,16 +1,24 @@
 package com.dextra.challenge.makemagic.domains.dto;
 
-import lombok.Builder;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 @Data
-@Builder
-public class CharacterResponseDTO {
+public class CharacterRequestDTO {
 
-	private Long id;
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String role;
+	
+	@NotBlank
 	private String school;
+	
+	@NotBlank
 	private String house;
+	
+	@NotBlank
 	private String patronus;
 }
