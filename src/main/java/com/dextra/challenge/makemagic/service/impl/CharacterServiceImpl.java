@@ -3,14 +3,13 @@ package com.dextra.challenge.makemagic.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dextra.challenge.makemagic.domains.Character;
 import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
+import com.dextra.challenge.makemagic.exceptions.custom.ResourceNotFoundException;
 import com.dextra.challenge.makemagic.mapper.MapStructCharacterMapper;
 import com.dextra.challenge.makemagic.repositories.CharacterRepository;
 import com.dextra.challenge.makemagic.service.CharacterService;
@@ -41,7 +40,7 @@ public class CharacterServiceImpl implements CharacterService {
 	@Override
 	public CharacterResponseDTO createCharacter(CharacterRequestDTO dto) {
 		if(!this.houseService.isAValidHouse(dto.getHouse())) {
-			throw new EntityNotFoundException("House not found");
+			throw new ResourceNotFoundException("House not found");
 		}
 		Character character = this.mapper.characterRequestToCharacter(dto);
 		character = this.repository.save(character);
