@@ -19,6 +19,7 @@ public class CharacterCreator {
 	
 	public static CharacterResponseDTO createCharacterResponseDTO() {
 		return CharacterResponseDTO.builder()
+				.id(1L)
 				.role("student")
 				.name("Harry Potter")
 				.school("Hogwarts")

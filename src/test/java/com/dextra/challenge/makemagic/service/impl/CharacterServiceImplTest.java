@@ -58,4 +58,9 @@ class CharacterServiceImplTest {
 		
 		Assertions.assertThat(resultListOfCharactersResponse.get(0).getName()).isEqualTo(savedCharacter.getName());
 	}
+
+	@Test
+	public void create_returnACharacterResponseDTO_whenHasValidHouseIDAndIsSucessful() {
+		
+	}
 }
