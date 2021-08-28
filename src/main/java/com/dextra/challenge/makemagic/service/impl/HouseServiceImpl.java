@@ -34,7 +34,7 @@ public class HouseServiceImpl implements HouseService {
 		return isValid;
 	}
 
-	private Map<String, List<House>> getAllHouses() {
+	public Map<String, List<House>> getAllHouses() {
 		return this.client.getAllHouses(apiKey);
 	}
 

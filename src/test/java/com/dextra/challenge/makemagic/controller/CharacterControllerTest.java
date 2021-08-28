@@ -63,4 +63,9 @@ class CharacterControllerTest {
 		resultActions.andExpect(jsonPath("$.[0].house", is(savedCharacter.getHouse())));
 		resultActions.andExpect(jsonPath("$.[0].patronus", is(savedCharacter.getPatronus())));
 	}
+	
+	@Test
+	public void create_returnCharacterResponse_whenSucessful() {
+		
+	}
 }
