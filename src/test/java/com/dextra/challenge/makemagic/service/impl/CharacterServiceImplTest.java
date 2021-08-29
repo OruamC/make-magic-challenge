@@ -16,9 +16,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.dextra.challenge.makemagic.domains.Character;
+import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
+import com.dextra.challenge.makemagic.exceptions.custom.ResourceNotFoundException;
 import com.dextra.challenge.makemagic.mapper.MapStructCharacterMapper;
 import com.dextra.challenge.makemagic.repositories.CharacterRepository;
+import com.dextra.challenge.makemagic.service.HouseService;
 import com.dextra.challenge.makemagic.util.CharacterCreator;
 
 @ExtendWith(SpringExtension.class)
@@ -29,6 +32,9 @@ class CharacterServiceImplTest {
 	
 	@Mock
 	private CharacterRepository repository;
+	
+	@Mock
+	private HouseService houseService;
 	
 	@Mock
 	private MapStructCharacterMapper mapper;
@@ -44,7 +50,10 @@ class CharacterServiceImplTest {
 		listOfCharacters.add(savedCharacter);
 		
 		when(this.repository.findAll()).thenReturn(listOfCharacters);
+		when(this.repository.save(ArgumentMatchers.any(Character.class))).thenReturn(savedCharacter);
+		when(this.mapper.characterRequestToCharacter(ArgumentMatchers.any(CharacterRequestDTO.class))).thenReturn(savedCharacter);
 		when(this.mapper.characterToCharacterResponseDTO(ArgumentMatchers.any(Character.class))).thenReturn(responseDTO);
+		when(this.houseService.isAValidHouse(ArgumentMatchers.anyString())).thenReturn(Boolean.TRUE);
 		
 	}
 	
@@ -57,5 +66,30 @@ class CharacterServiceImplTest {
 		Assertions.assertThat(resultListOfCharactersResponse).isNotEmpty().isNotNull().hasSize(1);
 		
 		Assertions.assertThat(resultListOfCharactersResponse.get(0).getName()).isEqualTo(savedCharacter.getName());
+	}
+
+	@Test
+	public void create_returnACharacterResponseDTO_whenHasValidHouseIDAndIsSucessful() {
+		CharacterRequestDTO characterRequest = CharacterCreator.createCharacterRequest();
+		
+		CharacterResponseDTO characterResponse = this.service.createCharacter(characterRequest);
+		
+		Assertions.assertThat(characterResponse).isNotNull();
+		Assertions.assertThat(characterResponse.getId()).isEqualTo(1L);
+		Assertions.assertThat(characterResponse.getName()).isEqualTo(characterRequest.getName());
+		Assertions.assertThat(characterResponse.getRole()).isEqualTo(characterRequest.getRole());
+		Assertions.assertThat(characterResponse.getHouse()).isEqualTo(characterRequest.getHouse());
+		Assertions.assertThat(characterResponse.getSchool()).isEqualTo(characterRequest.getSchool());
+		Assertions.assertThat(characterResponse.getPatronus()).isEqualTo(characterRequest.getPatronus());
+	}
+	
+	@Test
+	public void create_throwException_whenHasInvalidHouseID() {
+		CharacterRequestDTO characterRequest = CharacterCreator.createCharacterRequest();
+
+		when(this.houseService.isAValidHouse(ArgumentMatchers.anyString())).thenReturn(Boolean.FALSE);
+		
+		Assertions.assertThatExceptionOfType(ResourceNotFoundException.class)
+			.isThrownBy(() -> this.service.createCharacter(characterRequest));
 	}
 }

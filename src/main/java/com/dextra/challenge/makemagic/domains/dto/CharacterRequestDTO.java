@@ -1,32 +1,37 @@
 package com.dextra.challenge.makemagic.domains.dto;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
-public class CharacterResponseDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@JsonProperty("id")
-	private Long id;
-	
+public class CharacterRequestDTO {
+
+	@NotBlank
 	@JsonProperty("name")
 	private String name;
 	
+	@NotBlank
 	@JsonProperty("role")
 	private String role;
 	
+	@NotBlank
 	@JsonProperty("school")
 	private String school;
 
+	@NotBlank
 	@JsonProperty("house")
 	private String house;
 	
+	@NotBlank
 	@JsonProperty("patronus")
 	private String patronus;
 }
