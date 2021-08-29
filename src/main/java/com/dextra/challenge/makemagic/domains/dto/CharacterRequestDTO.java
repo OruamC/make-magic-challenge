@@ -15,23 +15,23 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CharacterRequestDTO {
 
-	@NotBlank
+	@NotBlank(message = "Must not be blank")
 	@JsonProperty("name")
 	private String name;
 	
-	@NotBlank
+	@NotBlank(message = "Must not be blank")
 	@JsonProperty("role")
 	private String role;
 	
-	@NotBlank
+	@NotBlank(message = "Must not be blank")
 	@JsonProperty("school")
 	private String school;
 
-	@NotBlank
+	@NotBlank(message = "Must not be blank")
 	@JsonProperty("house")
 	private String house;
 	
-	@NotBlank
+	@NotBlank(message = "Must not be blank")
 	@JsonProperty("patronus")
 	private String patronus;
 }

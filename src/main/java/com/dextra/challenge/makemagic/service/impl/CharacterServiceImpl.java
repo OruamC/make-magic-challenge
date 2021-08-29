@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.dextra.challenge.makemagic.domains.Character;
 import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
+import com.dextra.challenge.makemagic.exceptions.custom.DatabaseException;
 import com.dextra.challenge.makemagic.exceptions.custom.ResourceNotFoundException;
 import com.dextra.challenge.makemagic.mapper.MapStructCharacterMapper;
 import com.dextra.challenge.makemagic.repositories.CharacterRepository;
@@ -46,7 +49,7 @@ public class CharacterServiceImpl implements CharacterService {
 
 	@Override
 	public CharacterResponseDTO createCharacter(CharacterRequestDTO dto) {
-		checkingHouseId(dto);
+		checkingHouseId(dto.getHouse());
 		Character character = this.mapper.characterRequestToCharacter(dto);
 		character = this.repository.save(character);
 		return this.mapper.characterToCharacterResponseDTO(character);
@@ -55,15 +58,27 @@ public class CharacterServiceImpl implements CharacterService {
 	@Override
 	public CharacterResponseDTO updateCharacter(CharacterRequestDTO dto, Long id) {
 		this.getById(id);
-		checkingHouseId(dto);
+		checkingHouseId(dto.getHouse());
 		Character characterToUpdate = this.mapper.characterRequestToCharacter(dto);
 		characterToUpdate.setId(id);
 		Character updatedCharacter = this.repository.save(characterToUpdate);
 		return this.mapper.characterToCharacterResponseDTO(updatedCharacter);
 	}
 	
-	private void checkingHouseId(CharacterRequestDTO dto) {
-		if(!this.houseService.isAValidHouse(dto.getHouse())) {
+	@Override
+	public void deleteCharacter(Long id) {
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
+		}
+		
+	}
+	
+	private void checkingHouseId(String houseId) {
+		if(!this.houseService.isAValidHouse(houseId)) {
 			throw new ResourceNotFoundException("House not found");
 		}
 	}

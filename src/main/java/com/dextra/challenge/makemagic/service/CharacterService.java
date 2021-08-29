@@ -14,4 +14,6 @@ public interface CharacterService {
 	CharacterResponseDTO createCharacter(CharacterRequestDTO dto);
 	
 	CharacterResponseDTO updateCharacter(CharacterRequestDTO dto, Long id);
+	
+	void deleteCharacter(Long id);
 }
