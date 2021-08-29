@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
 import com.dextra.challenge.makemagic.service.CharacterService;
 
-@Controller
-@RequestMapping(value = "/api/characters")
+@RestController
+@RequestMapping(path = "/api/characters")
 public class CharacterController {
 
 	private CharacterService service;
@@ -37,7 +37,7 @@ public class CharacterController {
 		return ResponseEntity.ok(this.service.getAllCharacters());
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(path = "/{id}")
 	public ResponseEntity<CharacterResponseDTO> getById(@PathVariable(name = "id") Long id) {
 		return ResponseEntity.ok(this.service.getById(id));
 	}
@@ -50,14 +50,14 @@ public class CharacterController {
 		return ResponseEntity.created(uri).body(savedCharacter);
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(path = "/{id}")
 	public ResponseEntity<CharacterResponseDTO> updateCharacter(@RequestBody @Valid CharacterRequestDTO dto,
 			@PathVariable(name = "id") Long id) {
 		CharacterResponseDTO updatedCharacter = this.service.updateCharacter(dto, id);
 		return ResponseEntity.ok(updatedCharacter);
 	}
 	
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Void> deleteCharacter(@PathVariable(name = "id") Long id) {
 		this.service.deleteCharacter(id);
 		return ResponseEntity.noContent().build();
