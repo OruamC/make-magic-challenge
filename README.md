@@ -10,11 +10,13 @@ Challenge for the purpose of create a CRUD application about the universe of Har
 - [Usage](#usage)
     - [mvn](#mvn)
     - [Docker](#docker)
+- [Documentation](#documentation)
+    - [Houses](#houses)
 - [Footer](#footer)
 
 # Development
 
-this project was developed using:
+This project was developed using:
 
 - Java 11;
 - Spring 2.5.4;
@@ -53,6 +55,22 @@ docker build -t makemagic:v1 .
 
 docker run -p 8080:8080 --name makemagic makemagic:v1
 ```
+# Documentation
+
+If you want to see more informations about how this API works, access the following link (http://localhost:8080/swagger-ui/index.html) after starting the application.
+
+Also, there are an example of request body to create a new character.
+
+## Houses
+
+To create a new character, you must send in the request body, on the field "house", the id of one of the four houses existing in the school.
+
+| Name            | ID           |
+| -------------   |:-------------:|
+| Gryffindor      | 1760529f-6d51-4cb1-bcb1-25087fce5bde |
+| Hufflepuff      | 542b28e2-9904-4008-b038-034ab312ad7e |
+| Ravenclaw       | 56cabe3a-9bce-4b83-ba63-dcd156e9be45 |
+| Slytherin       | df01bd60-e3ed-478c-b760-cdbd9afe51fc |
 
 # Footer
 [(Back to top)](#table-of-contents)
