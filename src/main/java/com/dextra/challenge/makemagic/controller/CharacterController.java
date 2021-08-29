@@ -21,6 +21,11 @@ import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
 import com.dextra.challenge.makemagic.service.CharacterService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 @RequestMapping(path = "/api/characters")
 public class CharacterController {
@@ -33,16 +38,28 @@ public class CharacterController {
 	}
 	
 	@GetMapping
+	@Operation(summary = "Get All Characters", description = "By default returns all saved characters.")
 	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters() {
 		return ResponseEntity.ok(this.service.getAllCharacters());
 	}
 	
 	@GetMapping(path = "/{id}")
+	@Operation(summary = "Get a Character based on ID", 
+		description = "Return a character using the value pass by path variable.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Sucessful Operation"),
+			@ApiResponse(responseCode = "404", description = "When character id does not exist in the Database", content = @Content)
+	})
 	public ResponseEntity<CharacterResponseDTO> getById(@PathVariable(name = "id") Long id) {
 		return ResponseEntity.ok(this.service.getById(id));
 	}
 	
 	@PostMapping
+	@Operation(summary = "Save a Character on BD", description = "Saves a character if the house id is right.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "Sucessful Operation"),
+			@ApiResponse(responseCode = "404", description = "When character id does not exist in the Database", content = @Content)
+	})
 	public ResponseEntity<CharacterResponseDTO> createCharacter(@RequestBody @Valid CharacterRequestDTO dto) {
 		CharacterResponseDTO savedCharacter = this.service.createCharacter(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -51,6 +68,11 @@ public class CharacterController {
 	}
 	
 	@PutMapping(path = "/{id}")
+	@Operation(summary = "Updates values of a Character", description = "Replaces the values of a character if the id exists.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Sucessful Operation"),
+			@ApiResponse(responseCode = "404", description = "When character id does not exist in the Database", content = @Content)
+	})
 	public ResponseEntity<CharacterResponseDTO> updateCharacter(@RequestBody @Valid CharacterRequestDTO dto,
 			@PathVariable(name = "id") Long id) {
 		CharacterResponseDTO updatedCharacter = this.service.updateCharacter(dto, id);
@@ -58,6 +80,11 @@ public class CharacterController {
 	}
 	
 	@DeleteMapping(path = "/{id}")
+	@Operation(summary = "Deletes a character", description = "Deletes a character if the id exists.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Sucessful Operation"),
+			@ApiResponse(responseCode = "404", description = "When character id does not exist in the Database", content = @Content)
+	})
 	public ResponseEntity<Void> deleteCharacter(@PathVariable(name = "id") Long id) {
 		this.service.deleteCharacter(id);
 		return ResponseEntity.noContent().build();
