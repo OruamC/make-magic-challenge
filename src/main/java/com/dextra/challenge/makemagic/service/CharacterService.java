@@ -10,4 +10,6 @@ public interface CharacterService {
 	List<CharacterResponseDTO> getAllCharacters();
 	
 	CharacterResponseDTO createCharacter(CharacterRequestDTO dto);
+	
+	CharacterResponseDTO updateCharacter(CharacterRequestDTO dto);
 }
