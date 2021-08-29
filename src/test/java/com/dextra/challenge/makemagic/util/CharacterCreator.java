@@ -12,7 +12,7 @@ public class CharacterCreator {
 				.role("student")
 				.name("Harry Potter")
 				.school("Hogwarts")
-				.house("House test")
+				.house("1760529f-6d51-4cb1-bcb1-25087fce5bde")
 				.patronus("stag")
 				.build();
 	}
@@ -23,7 +23,7 @@ public class CharacterCreator {
 				.role("student")
 				.name("Harry Potter")
 				.school("Hogwarts")
-				.house("House test")
+				.house("1760529f-6d51-4cb1-bcb1-25087fce5bde")
 				.patronus("stag")
 				.build();
 	}
@@ -33,7 +33,7 @@ public class CharacterCreator {
 				.role("student")
 				.name("Harry Potter")
 				.school("Hogwarts")
-				.house("House test")
+				.house("1760529f-6d51-4cb1-bcb1-25087fce5bde")
 				.patronus("stag")
 				.build();
 	}

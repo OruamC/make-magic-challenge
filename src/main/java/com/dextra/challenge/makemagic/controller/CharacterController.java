@@ -4,9 +4,11 @@ import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,6 +29,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+@Validated
 @RestController
 @RequestMapping(path = "/api/characters")
 public class CharacterController {
@@ -39,8 +43,10 @@ public class CharacterController {
 	
 	@GetMapping
 	@Operation(summary = "Get All Characters", description = "By default returns all saved characters.")
-	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters() {
-		return ResponseEntity.ok(this.service.getAllCharacters());
+	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters(
+			@Pattern(regexp = "^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$", message = "Invalid House ID")
+			@RequestParam(required = false, name = "house") String house) {
+		return ResponseEntity.ok(this.service.getAllCharacters(house));
 	}
 	
 	@GetMapping(path = "/{id}")

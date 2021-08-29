@@ -3,6 +3,9 @@ package com.dextra.challenge.makemagic.exceptions;
 import java.time.Instant;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path.Node;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,26 @@ public class ExceptionHandlerController {
 		err.setError("Resource not found");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<ValidationError> validationHouseId(ConstraintViolationException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		ValidationError err = new ValidationError();
+		err.setTimeStamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Validation exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		ConstraintViolation<?> violation = e.getConstraintViolations().iterator().next();
+		for (Node node : violation.getPropertyPath()) {
+			err.addError(node.getName(), violation.getMessage());
+			
+		}
 		return ResponseEntity.status(status).body(err);
 	}
 	

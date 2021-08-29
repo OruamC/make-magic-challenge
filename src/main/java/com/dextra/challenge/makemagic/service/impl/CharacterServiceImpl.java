@@ -3,6 +3,7 @@ package com.dextra.challenge.makemagic.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,15 @@ public class CharacterServiceImpl implements CharacterService {
 	}
 
 	@Override
-	public List<CharacterResponseDTO> getAllCharacters() {
+	public List<CharacterResponseDTO> getAllCharacters(String house) {
+		if(StringUtils.isNotBlank(house)) {
+			return this.repository.findByHouse(house).stream()
+					.map(obj -> this.mapper.characterToCharacterResponseDTO(obj))
+					.collect(Collectors.toList());
+		}
 		return this.repository.findAll().stream()
 				.map(obj -> this.mapper.characterToCharacterResponseDTO(obj))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList());			
 	}
 
 	@Override

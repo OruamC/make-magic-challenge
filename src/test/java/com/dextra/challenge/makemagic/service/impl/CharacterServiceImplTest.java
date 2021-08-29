@@ -55,6 +55,7 @@ class CharacterServiceImplTest {
 		listOfCharacters.add(savedCharacter);
 		
 		when(this.repository.findAll()).thenReturn(listOfCharacters);
+		when(this.repository.findByHouse(ArgumentMatchers.anyString())).thenReturn(listOfCharacters);
 		when(this.repository.findById(ArgumentMatchers.anyLong())).thenReturn(optionalCharacter);
 		when(this.repository.save(ArgumentMatchers.any(Character.class))).thenReturn(savedCharacter);
 		doNothing().when(this.repository).deleteById(ArgumentMatchers.anyLong());
@@ -69,8 +70,26 @@ class CharacterServiceImplTest {
 	@Test
 	public void getAll_returnAListOfCharacterResponseDTO_whenSucessful() {
 		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		String houseId = "";
 		
-		List<CharacterResponseDTO> resultListOfCharactersResponse = this.service.getAllCharacters();
+		List<CharacterResponseDTO> resultListOfCharactersResponse = this.service.getAllCharacters(houseId);
+		
+		Assertions.assertThat(resultListOfCharactersResponse).isNotEmpty().isNotNull().hasSize(1);
+		
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getName()).isEqualTo(savedCharacter.getName());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getId()).isEqualTo(savedCharacter.getId());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getHouse()).isEqualTo(savedCharacter.getHouse());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getRole()).isEqualTo(savedCharacter.getRole());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getSchool()).isEqualTo(savedCharacter.getSchool());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getPatronus()).isEqualTo(savedCharacter.getPatronus());
+	}
+	
+	@Test
+	public void getAll_returnAListOfCharacterResponseDTO_whenHouseIDisValidAndSucessful() {
+		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		String houseId = "Test House ID";
+		
+		List<CharacterResponseDTO> resultListOfCharactersResponse = this.service.getAllCharacters(houseId);
 		
 		Assertions.assertThat(resultListOfCharactersResponse).isNotEmpty().isNotNull().hasSize(1);
 		
