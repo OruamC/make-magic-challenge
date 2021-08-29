@@ -1,5 +1,6 @@
 package com.dextra.challenge.makemagic.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.dextra.challenge.makemagic.domains.Character;
 import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
+import com.dextra.challenge.makemagic.exceptions.ExceptionHandlerController;
+import com.dextra.challenge.makemagic.exceptions.custom.ResourceNotFoundException;
 import com.dextra.challenge.makemagic.service.CharacterService;
 import com.dextra.challenge.makemagic.util.CharacterCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +48,8 @@ class CharacterControllerTest {
 	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
-		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller).build();
+		this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller)
+				.setControllerAdvice(new ExceptionHandlerController()).build();
 		
 		CharacterResponseDTO characterResponse = CharacterCreator.createCharacterResponseDTO();
 		List<CharacterResponseDTO> list = new ArrayList<>();
@@ -90,7 +94,21 @@ class CharacterControllerTest {
 		resultActions.andExpect(jsonPath("$.school", is(savedCharacter.getSchool())));
 		resultActions.andExpect(jsonPath("$.house", is(savedCharacter.getHouse())));
 		resultActions.andExpect(jsonPath("$.patronus", is(savedCharacter.getPatronus())));
+	}
+	
+	@Test
+	public void create_willThrowResourceNotFound_whenHouseIdIsInvalid() throws Exception {
+		when(this.service.createCharacter(ArgumentMatchers.any(CharacterRequestDTO.class)))
+			.thenThrow(new ResourceNotFoundException("Teste Resource Not Found"));
 		
+		CharacterRequestDTO characterRequest = CharacterCreator.createCharacterRequest();
 		
+		this.mockMvc.perform(post("/api/characters")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(characterRequest)))
+				.andExpect(status().isNotFound())
+				 .andExpect(result -> assertThat(result.getResolvedException() 
+						 instanceof ResourceNotFoundException));
 	}
 }
