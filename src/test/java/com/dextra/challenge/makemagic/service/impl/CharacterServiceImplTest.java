@@ -126,4 +126,20 @@ class CharacterServiceImplTest {
 		Assertions.assertThatExceptionOfType(ResourceNotFoundException.class)
 			.isThrownBy(() -> this.service.createCharacter(characterRequest));
 	}
+	
+	@Test
+	public void update_returnACharacterUpdate_whenSucessful() {
+		CharacterRequestDTO characterRequest = CharacterCreator.createCharacterRequest();
+		Long id = 1L;
+		
+		CharacterResponseDTO updatedCharacter = this.service.updateCharacter(characterRequest, id);
+		
+		Assertions.assertThat(updatedCharacter).isNotNull();
+		Assertions.assertThat(updatedCharacter.getId()).isEqualTo(1L);
+		Assertions.assertThat(updatedCharacter.getName()).isEqualTo(characterRequest.getName());
+		Assertions.assertThat(updatedCharacter.getRole()).isEqualTo(characterRequest.getRole());
+		Assertions.assertThat(updatedCharacter.getHouse()).isEqualTo(characterRequest.getHouse());
+		Assertions.assertThat(updatedCharacter.getSchool()).isEqualTo(characterRequest.getSchool());
+		Assertions.assertThat(updatedCharacter.getPatronus()).isEqualTo(characterRequest.getPatronus());
+	}
 }
