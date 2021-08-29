@@ -6,22 +6,13 @@ Challenge for the purpose of create a CRUD application about the universe of Har
 
 - [Make Magic Challenge](#make-magic-challenge)
 - [Table of contents](#table-of-contents)
-- [Usage](#usage)
 - [Development](#development)
+- [Usage](#usage)
+    - [mvn](#mvn)
+    - [Docker](#docker)
 - [Footer](#footer)
 
-## Usage
-
-To test the application, clone the repo in your machine and in the project folder run the code bellow on the bash.
-
-```bash
-mvn install
-
-#Start Application
-mvn spring-boot:run
-```
-
-## Development
+# Development
 
 this project was developed using:
 
@@ -31,7 +22,37 @@ this project was developed using:
 - H2 Database;
 - Feign Client;
 - JPA;
-- JUnit/Mockito
+- JUnit/Mockito;
+- git;
+- docker 20.10.8;
+
+# Usage
+
+To test the application, clone the repo in your machine and in the project folder run the code bellow on the bash.
+
+```bash
+git clone https://github.com/OruamC/make-magic-challenge.git
+
+cd make-magic-challenge
+
+mvn clean install
+```
+
+After that, you can run the application by mvn or docker
+
+## MVN
+
+```bash
+#Start Application
+mvn spring-boot:run
+```
+## Docker
+
+```bash
+docker build -t makemagic:v1 .
+
+docker run -p 8080:8080 --name makemagic makemagic:v1
+```
 
 # Footer
 [(Back to top)](#table-of-contents)
