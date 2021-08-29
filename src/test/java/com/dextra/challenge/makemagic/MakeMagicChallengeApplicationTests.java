@@ -8,6 +8,7 @@ class MakeMagicChallengeApplicationTests {
 
 	@Test
 	void contextLoads() {
+		MakeMagicChallengeApplication.main(new String[] {});
 	}
 
 }

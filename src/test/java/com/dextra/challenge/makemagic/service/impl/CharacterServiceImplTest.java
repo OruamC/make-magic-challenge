@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,15 +45,19 @@ class CharacterServiceImplTest {
 		MockitoAnnotations.openMocks(this);
 		
 		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		Optional<Character> optionalCharacter = Optional.of(savedCharacter);
 		CharacterResponseDTO responseDTO = CharacterCreator.createCharacterResponseDTO();
 		
 		List<Character> listOfCharacters = new ArrayList<>();
 		listOfCharacters.add(savedCharacter);
 		
 		when(this.repository.findAll()).thenReturn(listOfCharacters);
+		when(this.repository.findById(ArgumentMatchers.anyLong())).thenReturn(optionalCharacter);
 		when(this.repository.save(ArgumentMatchers.any(Character.class))).thenReturn(savedCharacter);
+		
 		when(this.mapper.characterRequestToCharacter(ArgumentMatchers.any(CharacterRequestDTO.class))).thenReturn(savedCharacter);
 		when(this.mapper.characterToCharacterResponseDTO(ArgumentMatchers.any(Character.class))).thenReturn(responseDTO);
+		
 		when(this.houseService.isAValidHouse(ArgumentMatchers.anyString())).thenReturn(Boolean.TRUE);
 		
 	}
@@ -66,6 +71,35 @@ class CharacterServiceImplTest {
 		Assertions.assertThat(resultListOfCharactersResponse).isNotEmpty().isNotNull().hasSize(1);
 		
 		Assertions.assertThat(resultListOfCharactersResponse.get(0).getName()).isEqualTo(savedCharacter.getName());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getId()).isEqualTo(savedCharacter.getId());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getHouse()).isEqualTo(savedCharacter.getHouse());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getRole()).isEqualTo(savedCharacter.getRole());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getSchool()).isEqualTo(savedCharacter.getSchool());
+		Assertions.assertThat(resultListOfCharactersResponse.get(0).getPatronus()).isEqualTo(savedCharacter.getPatronus());
+	}
+	
+	@Test
+	public void getByID_returnACharacterResponseDTO_whenSucessful() {
+		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		
+		CharacterResponseDTO response = this.service.getById(1L);
+		
+		Assertions.assertThat(response).isNotNull();
+		
+		Assertions.assertThat(response.getName()).isEqualTo(savedCharacter.getName());
+		Assertions.assertThat(response.getId()).isEqualTo(savedCharacter.getId());
+		Assertions.assertThat(response.getHouse()).isEqualTo(savedCharacter.getHouse());
+		Assertions.assertThat(response.getRole()).isEqualTo(savedCharacter.getRole());
+		Assertions.assertThat(response.getSchool()).isEqualTo(savedCharacter.getSchool());
+		Assertions.assertThat(response.getPatronus()).isEqualTo(savedCharacter.getPatronus());
+	}
+	
+	@Test
+	public void getByID_throwsResourceNotFound_whenNotSucessful() {
+		when(this.repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
+		
+		Assertions.assertThatExceptionOfType(ResourceNotFoundException.class)
+			.isThrownBy(() -> this.service.getById(2L));
 	}
 
 	@Test
