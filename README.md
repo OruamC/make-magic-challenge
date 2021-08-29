@@ -6,11 +6,25 @@ Challenge for the purpose of create a CRUD application about the universe of Har
 
 - [Make Magic Challenge](#make-magic-challenge)
 - [Table of contents](#table-of-contents)
+- [Development](#development)
 - [Usage](#usage)
     - [mvn](#mvn)
     - [Docker](#docker)
-- [Development](#development)
 - [Footer](#footer)
+
+# Development
+
+this project was developed using:
+
+- Java 11;
+- Spring 2.5.4;
+- Maven 3.6.3;
+- H2 Database;
+- Feign Client;
+- JPA;
+- JUnit/Mockito;
+- git;
+- docker 20.10.8;
 
 # Usage
 
@@ -39,20 +53,6 @@ docker build -t makemagic:v1 .
 
 docker run -p 8080:8080 --name makemagic makemagic:v1
 ```
-
-# Development
-
-this project was developed using:
-
-- Java 11;
-- Spring 2.5.4;
-- Maven 3.6.3;
-- H2 Database;
-- Feign Client;
-- JPA;
-- JUnit/Mockito;
-- git;
-- docker 20.10.8;
 
 # Footer
 [(Back to top)](#table-of-contents)
