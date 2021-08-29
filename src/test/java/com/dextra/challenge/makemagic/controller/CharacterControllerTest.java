@@ -2,7 +2,9 @@ package com.dextra.challenge.makemagic.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -62,6 +64,7 @@ class CharacterControllerTest {
 			.thenReturn(characterResponse);
 		when(this.service.updateCharacter(ArgumentMatchers.any(CharacterRequestDTO.class), ArgumentMatchers.anyLong()))
 			.thenReturn(characterResponse);
+		doNothing().when(this.service).deleteCharacter(ArgumentMatchers.anyLong());
 	}
 	
 	@Test
@@ -150,5 +153,12 @@ class CharacterControllerTest {
 		resultActions.andExpect(jsonPath("$.school", is(savedCharacter.getSchool())));
 		resultActions.andExpect(jsonPath("$.house", is(savedCharacter.getHouse())));
 		resultActions.andExpect(jsonPath("$.patronus", is(savedCharacter.getPatronus())));
+	}
+	
+	@Test
+	public void delete_removesCharacter_whenSucessful() throws Exception {
+		ResultActions resultActions = this.mockMvc.perform(delete("/api/characters/1"));
+		
+		resultActions.andExpect(status().isNoContent());
 	}
 }

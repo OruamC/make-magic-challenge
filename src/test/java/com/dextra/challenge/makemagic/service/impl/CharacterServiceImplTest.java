@@ -1,5 +1,7 @@
 package com.dextra.challenge.makemagic.service.impl;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.dextra.challenge.makemagic.domains.Character;
@@ -54,6 +57,7 @@ class CharacterServiceImplTest {
 		when(this.repository.findAll()).thenReturn(listOfCharacters);
 		when(this.repository.findById(ArgumentMatchers.anyLong())).thenReturn(optionalCharacter);
 		when(this.repository.save(ArgumentMatchers.any(Character.class))).thenReturn(savedCharacter);
+		doNothing().when(this.repository).deleteById(ArgumentMatchers.anyLong());
 		
 		when(this.mapper.characterRequestToCharacter(ArgumentMatchers.any(CharacterRequestDTO.class))).thenReturn(savedCharacter);
 		when(this.mapper.characterToCharacterResponseDTO(ArgumentMatchers.any(Character.class))).thenReturn(responseDTO);
@@ -141,5 +145,20 @@ class CharacterServiceImplTest {
 		Assertions.assertThat(updatedCharacter.getHouse()).isEqualTo(characterRequest.getHouse());
 		Assertions.assertThat(updatedCharacter.getSchool()).isEqualTo(characterRequest.getSchool());
 		Assertions.assertThat(updatedCharacter.getPatronus()).isEqualTo(characterRequest.getPatronus());
+	}
+	
+	@Test
+	public void delete_returnVoid_whenSucessful() {
+		Long id = 1L;
+		
+		Assertions.assertThatCode(() -> this.service.deleteCharacter(id)).doesNotThrowAnyException();
+	}
+	
+	@Test
+	public void delete_throwException_whenHasInvalidID() {
+		doThrow(EmptyResultDataAccessException.class).when(this.repository).deleteById(ArgumentMatchers.anyLong());
+		
+		Assertions.assertThatExceptionOfType(ResourceNotFoundException.class)
+			.isThrownBy(() -> this.service.deleteCharacter(1L));
 	}
 }

@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.dextra.challenge.makemagic.domains.Character;
 import com.dextra.challenge.makemagic.domains.dto.CharacterRequestDTO;
 import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
-import com.dextra.challenge.makemagic.exceptions.custom.DatabaseException;
 import com.dextra.challenge.makemagic.exceptions.custom.ResourceNotFoundException;
 import com.dextra.challenge.makemagic.mapper.MapStructCharacterMapper;
 import com.dextra.challenge.makemagic.repositories.CharacterRepository;
@@ -71,10 +69,7 @@ public class CharacterServiceImpl implements CharacterService {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Integrity violation");
 		}
-		
 	}
 	
 	private void checkingHouseId(String houseId) {
