@@ -38,6 +38,13 @@ public class CharacterServiceImpl implements CharacterService {
 	}
 
 	@Override
+	public CharacterResponseDTO getById(Long id) {
+		Character character = this.repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Character not found"));
+		return this.mapper.characterToCharacterResponseDTO(character);
+	}
+
+	@Override
 	public CharacterResponseDTO createCharacter(CharacterRequestDTO dto) {
 		if(!this.houseService.isAValidHouse(dto.getHouse())) {
 			throw new ResourceNotFoundException("House not found");
@@ -46,5 +53,4 @@ public class CharacterServiceImpl implements CharacterService {
 		character = this.repository.save(character);
 		return this.mapper.characterToCharacterResponseDTO(character);
 	}
-
 }

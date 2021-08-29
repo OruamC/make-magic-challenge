@@ -56,6 +56,7 @@ class CharacterControllerTest {
 		list.add(characterResponse);
 		
 		when(this.service.getAllCharacters()).thenReturn(list);
+		when(this.service.getById(1L)).thenReturn(characterResponse);
 		when(this.service.createCharacter(ArgumentMatchers.any(CharacterRequestDTO.class)))
 			.thenReturn(characterResponse);
 	}
@@ -74,6 +75,22 @@ class CharacterControllerTest {
 		resultActions.andExpect(jsonPath("$.[0].school", is(savedCharacter.getSchool())));
 		resultActions.andExpect(jsonPath("$.[0].house", is(savedCharacter.getHouse())));
 		resultActions.andExpect(jsonPath("$.[0].patronus", is(savedCharacter.getPatronus())));
+	}
+	
+	@Test
+	public void getByID_returnACharacters_whenSucessful() throws Exception {
+		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		
+		ResultActions resultActions = this.mockMvc.perform(get("/api/characters/1"));
+
+		resultActions.andExpect(status().isOk());
+		resultActions.andExpect(jsonPath("$").isNotEmpty());
+		resultActions.andExpect(jsonPath("$.id", is(Integer.valueOf(savedCharacter.getId().toString()))));
+		resultActions.andExpect(jsonPath("$.role", is(savedCharacter.getRole())));
+		resultActions.andExpect(jsonPath("$.name", is(savedCharacter.getName())));
+		resultActions.andExpect(jsonPath("$.school", is(savedCharacter.getSchool())));
+		resultActions.andExpect(jsonPath("$.house", is(savedCharacter.getHouse())));
+		resultActions.andExpect(jsonPath("$.patronus", is(savedCharacter.getPatronus())));
 	}
 	
 	@Test
@@ -108,7 +125,7 @@ class CharacterControllerTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(characterRequest)))
 				.andExpect(status().isNotFound())
-				 .andExpect(result -> assertThat(result.getResolvedException() 
+				.andExpect(result -> assertThat(result.getResolvedException() 
 						 instanceof ResourceNotFoundException));
 	}
 }

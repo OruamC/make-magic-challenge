@@ -9,5 +9,7 @@ public interface CharacterService {
 
 	List<CharacterResponseDTO> getAllCharacters();
 	
+	CharacterResponseDTO getById(Long id);
+	
 	CharacterResponseDTO createCharacter(CharacterRequestDTO dto);
 }
