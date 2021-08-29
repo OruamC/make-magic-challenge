@@ -7,7 +7,7 @@ import com.dextra.challenge.makemagic.domains.dto.CharacterResponseDTO;
 
 public interface CharacterService {
 
-	List<CharacterResponseDTO> getAllCharacters();
+	List<CharacterResponseDTO> getAllCharacters(String house);
 	
 	CharacterResponseDTO getById(Long id);
 	

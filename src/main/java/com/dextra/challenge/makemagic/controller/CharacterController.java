@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,8 +40,9 @@ public class CharacterController {
 	
 	@GetMapping
 	@Operation(summary = "Get All Characters", description = "By default returns all saved characters.")
-	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters() {
-		return ResponseEntity.ok(this.service.getAllCharacters());
+	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters(
+			@RequestParam(defaultValue = "", name = "house") String house) {
+		return ResponseEntity.ok(this.service.getAllCharacters(house));
 	}
 	
 	@GetMapping(path = "/{id}")
