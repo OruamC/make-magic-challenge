@@ -38,6 +38,7 @@ import com.dextra.challenge.makemagic.util.CharacterCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
+
 class CharacterControllerTest {
 
 	@InjectMocks
