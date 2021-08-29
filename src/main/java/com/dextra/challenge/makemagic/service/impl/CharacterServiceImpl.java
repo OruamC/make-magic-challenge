@@ -46,11 +46,25 @@ public class CharacterServiceImpl implements CharacterService {
 
 	@Override
 	public CharacterResponseDTO createCharacter(CharacterRequestDTO dto) {
-		if(!this.houseService.isAValidHouse(dto.getHouse())) {
-			throw new ResourceNotFoundException("House not found");
-		}
+		checkingHouseId(dto);
 		Character character = this.mapper.characterRequestToCharacter(dto);
 		character = this.repository.save(character);
 		return this.mapper.characterToCharacterResponseDTO(character);
+	}
+
+	@Override
+	public CharacterResponseDTO updateCharacter(CharacterRequestDTO dto, Long id) {
+		this.getById(id);
+		checkingHouseId(dto);
+		Character characterToUpdate = this.mapper.characterRequestToCharacter(dto);
+		characterToUpdate.setId(id);
+		Character updatedCharacter = this.repository.save(characterToUpdate);
+		return this.mapper.characterToCharacterResponseDTO(updatedCharacter);
+	}
+	
+	private void checkingHouseId(CharacterRequestDTO dto) {
+		if(!this.houseService.isAValidHouse(dto.getHouse())) {
+			throw new ResourceNotFoundException("House not found");
+		}
 	}
 }

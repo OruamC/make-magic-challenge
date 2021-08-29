@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,6 +59,8 @@ class CharacterControllerTest {
 		when(this.service.getAllCharacters()).thenReturn(list);
 		when(this.service.getById(1L)).thenReturn(characterResponse);
 		when(this.service.createCharacter(ArgumentMatchers.any(CharacterRequestDTO.class)))
+			.thenReturn(characterResponse);
+		when(this.service.updateCharacter(ArgumentMatchers.any(CharacterRequestDTO.class), ArgumentMatchers.anyLong()))
 			.thenReturn(characterResponse);
 	}
 	
@@ -127,5 +130,25 @@ class CharacterControllerTest {
 				.andExpect(status().isNotFound())
 				.andExpect(result -> assertThat(result.getResolvedException() 
 						 instanceof ResourceNotFoundException));
+	}
+	
+	@Test
+	public void replace_updatesACharacter_whenSucessful() throws Exception {
+		Character savedCharacter = CharacterCreator.createCharacterDomain();
+		CharacterRequestDTO characterRequest = CharacterCreator.createCharacterRequest();
+		
+		ResultActions resultActions = this.mockMvc.perform(put("/api/characters/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(characterRequest)));
+		
+		resultActions.andExpect(status().isOk());
+		resultActions.andExpect(jsonPath("$").isNotEmpty());
+		resultActions.andExpect(jsonPath("$.id", is(Integer.valueOf(savedCharacter.getId().toString()))));
+		resultActions.andExpect(jsonPath("$.role", is(savedCharacter.getRole())));
+		resultActions.andExpect(jsonPath("$.name", is(savedCharacter.getName())));
+		resultActions.andExpect(jsonPath("$.school", is(savedCharacter.getSchool())));
+		resultActions.andExpect(jsonPath("$.house", is(savedCharacter.getHouse())));
+		resultActions.andExpect(jsonPath("$.patronus", is(savedCharacter.getPatronus())));
 	}
 }
