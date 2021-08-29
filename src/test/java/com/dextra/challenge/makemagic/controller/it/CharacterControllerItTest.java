@@ -1,7 +1,11 @@
 package com.dextra.challenge.makemagic.controller.it;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,5 +42,16 @@ public class CharacterControllerItTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(characterRequest)))
 				.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void getAll_throwConstraintViolationException_whenHouseParamNotSucess() throws Exception {
+		this.mockMvc.perform(get("/api/characters")
+				.queryParam("house", "test")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnprocessableEntity())
+				.andExpect(result -> assertThat(result.getResolvedException() 
+						 instanceof ConstraintViolationException));
 	}
 }

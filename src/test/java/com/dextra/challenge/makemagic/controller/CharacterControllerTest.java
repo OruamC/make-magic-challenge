@@ -38,7 +38,6 @@ import com.dextra.challenge.makemagic.util.CharacterCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
-
 class CharacterControllerTest {
 
 	@InjectMocks
@@ -60,6 +59,7 @@ class CharacterControllerTest {
 		list.add(characterResponse);
 		
 		when(this.service.getAllCharacters(ArgumentMatchers.anyString())).thenReturn(list);
+		when(this.service.getAllCharacters(null)).thenReturn(list);
 		when(this.service.getById(1L)).thenReturn(characterResponse);
 		when(this.service.createCharacter(ArgumentMatchers.any(CharacterRequestDTO.class)))
 			.thenReturn(characterResponse);
@@ -72,7 +72,8 @@ class CharacterControllerTest {
 	public void getAllCharacters_returnAListOfCharacters_whenSucessful() throws Exception {
 		Character savedCharacter = CharacterCreator.createCharacterDomain();
 		
-		ResultActions resultActions = this.mockMvc.perform(get("/api/characters")).andDo(MockMvcResultHandlers.print());
+		ResultActions resultActions = this.mockMvc.perform(get("/api/characters"))
+				.andDo(MockMvcResultHandlers.print());
 
 		resultActions.andExpect(status().isOk());
 		resultActions.andExpect(jsonPath("$").isNotEmpty());
