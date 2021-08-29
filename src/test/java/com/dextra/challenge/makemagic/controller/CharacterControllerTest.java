@@ -59,7 +59,7 @@ class CharacterControllerTest {
 		List<CharacterResponseDTO> list = new ArrayList<>();
 		list.add(characterResponse);
 		
-		when(this.service.getAllCharacters()).thenReturn(list);
+		when(this.service.getAllCharacters(ArgumentMatchers.anyString())).thenReturn(list);
 		when(this.service.getById(1L)).thenReturn(characterResponse);
 		when(this.service.createCharacter(ArgumentMatchers.any(CharacterRequestDTO.class)))
 			.thenReturn(characterResponse);
