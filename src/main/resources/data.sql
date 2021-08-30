@@ -1,3 +1,0 @@
-INSERT INTO tab_character (id, name, role, school, house, patronus) VALUES (1, 'Ninfadora Tonks', 'auror', 'Hogwarts School of Witchcraft and Wizardry', '542b28e2-9904-4008-b038-034ab312ad7e', 'wolf');
-INSERT INTO tab_character (id, name, role, school, house, patronus) VALUES (2, 'Luna Lovegood', 'student', 'Hogwarts School of Witchcraft and Wizardry', '56cabe3a-9bce-4b83-ba63-dcd156e9be45', 'hare');
-INSERT INTO tab_character (id, name, role, school, house, patronus) VALUES (3, 'Severo Snape', 'teacher', 'Hogwarts School of Witchcraft and Wizardry', 'df01bd60-e3ed-478c-b760-cdbd9afe51fc', 'doe');
