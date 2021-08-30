@@ -1,0 +1,12 @@
+com.dextra.challenge.makemagic
+com.dextra.challenge.makemagic.client
+com.dextra.challenge.makemagic.controller
+com.dextra.challenge.makemagic.domains
+com.dextra.challenge.makemagic.domains.dto
+com.dextra.challenge.makemagic.exceptions
+com.dextra.challenge.makemagic.exceptions.custom
+com.dextra.challenge.makemagic.mapper
+com.dextra.challenge.makemagic.mapper.impl
+com.dextra.challenge.makemagic.repositories
+com.dextra.challenge.makemagic.service
+com.dextra.challenge.makemagic.service.impl

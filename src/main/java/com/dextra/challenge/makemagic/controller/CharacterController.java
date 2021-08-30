@@ -29,6 +29,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+
+/**
+ * The controller for Character REST endpoints.
+ * 
+ * <p>
+ * This class handle the CRUD operations for Characters from Harry Potter Universe, via HTTP actions.
+ * </p>
+ * 
+ * *@author oruam
+ *
+ */
 @Validated
 @RestController
 @RequestMapping(path = "/api/characters")
@@ -41,6 +52,15 @@ public class CharacterController {
 		this.service = service;
 	}
 	
+	/**
+	 * Get all the characters saved on the database or return all the characters based on the house id.
+	 * 
+	 * Returns one of the following status code:
+	 * 200: sucessfully return a list of Characters.
+	 * 
+	 * @param house past by request param to filter the results by this parameter.
+	 * @return a list of Characters.
+	 */
 	@GetMapping
 	@Operation(summary = "Get All Characters", description = "By default returns all saved characters.")
 	public ResponseEntity<List<CharacterResponseDTO>> getAllCharacters(
@@ -49,6 +69,16 @@ public class CharacterController {
 		return ResponseEntity.ok(this.service.getAllCharacters(house));
 	}
 	
+	/**
+	 * Get a character based on the id.
+	 * 
+	 * Returns one of the following status code:
+	 * 200: sucessfully a Character.
+	 * 404: unable to return a character, because didn't found any register with this id.
+	 * 
+	 * @param id past by path variable.
+	 * @return a single character when sucessful.
+	 */
 	@GetMapping(path = "/{id}")
 	@Operation(summary = "Get a Character based on ID", 
 		description = "Return a character using the value pass by path variable.")
@@ -60,6 +90,17 @@ public class CharacterController {
 		return ResponseEntity.ok(this.service.getById(id));
 	}
 	
+	
+	/**
+	 * Create a new character object, given the data provided.
+	 * 
+	 * Returns one of the following status code:
+	 * 201: sucessfully created a new character.
+	 * 404: unable to create character, because didn't found a house by house id.  
+	 * 
+	 * @param dto a JSON representation of a character object. 
+	 * @return the newly created character object.
+	 */
 	@PostMapping
 	@Operation(summary = "Save a Character on BD", description = "Saves a character if the house id is right.")
 	@ApiResponses(value = {
@@ -73,6 +114,17 @@ public class CharacterController {
 		return ResponseEntity.created(uri).body(savedCharacter);
 	}
 	
+	/**
+	 * Replace the informations about one character in the database.
+	 * 
+	 * Returns one of the following status code:
+	 * 200: sucessfully update the informations of the character.
+	 * 404: unable to update the character, because didn't found any register with this id. 
+	 * 
+	 * @param dto a JSON representation of a character object. 
+	 * @param id past by path variable.
+	 * @return an updated character object.
+	 */
 	@PutMapping(path = "/{id}")
 	@Operation(summary = "Updates values of a Character", description = "Replaces the values of a character if the id exists.")
 	@ApiResponses(value = {
@@ -85,6 +137,16 @@ public class CharacterController {
 		return ResponseEntity.ok(updatedCharacter);
 	}
 	
+	/**
+	 * Remove a character from the database.
+	 * 
+	 * Returns one of the following status code:
+	 * 204: sucessfully remove the informations of the character.
+	 * 404: unable to update the character, because didn't found any register with this id. 
+	 * 
+	 * @param id past by path variable.
+	 * @return an empty response when successful.
+	 */
 	@DeleteMapping(path = "/{id}")
 	@Operation(summary = "Deletes a character", description = "Deletes a character if the id exists.")
 	@ApiResponses(value = {
