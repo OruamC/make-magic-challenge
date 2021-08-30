@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.dextra.challenge.makemagic.client"},{"l":"com.dextra.challenge.makemagic.domains"},{"l":"com.dextra.challenge.makemagic.domains.dto"},{"l":"com.dextra.challenge.makemagic.exceptions"},{"l":"com.dextra.challenge.makemagic.exceptions.custom"},{"l":"com.dextra.challenge.makemagic.repositories"}]

@@ -31,8 +31,6 @@ public class ExceptionHandlerController {
 		return ResponseEntity.status(status).body(err);
 	}
 	
-	
-	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ValidationError> validationHouseId(ConstraintViolationException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
