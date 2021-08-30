@@ -10,6 +10,7 @@ Challenge for the purpose of create a CRUD application about the universe of Har
 - [Usage](#usage)
     - [mvn](#mvn)
     - [Docker](#docker)
+    - [Postman](#postman)
 - [Documentation](#documentation)
     - [Houses](#houses)
 - [Footer](#footer)
@@ -18,15 +19,16 @@ Challenge for the purpose of create a CRUD application about the universe of Har
 
 This project was developed using:
 
-- Java 11;
-- Spring 2.5.4;
-- Maven 3.6.3;
-- H2 Database;
-- Feign Client;
-- JPA;
-- JUnit/Mockito;
-- git;
-- docker 20.10.8;
+- [Java 11](https://openjdk.java.net/projects/jdk/11/);
+- [Spring 2.5.4](https://spring.io/blog/2021/08/19/spring-boot-2-5-4-available-now);
+- [Maven 3.6.3](https://maven.apache.org/download.cgi);
+- [H2 Database](https://www.h2database.com/html/main.html);
+- [Feign Client](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/);
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa);
+- [JUnit/Mockito](https://junit.org/junit5/);
+- [git](https://git-scm.com/);
+- [docker 20.10.8](https://docs.docker.com/);
+- [Postman](https://www.postman.com/);
 
 # Usage
 
@@ -55,6 +57,12 @@ docker build -t makemagic:v1 .
 
 docker run -p 8080:8080 --name makemagic makemagic:v1
 ```
+## Postman
+
+You can import the postman collection file inside the "postman-collection" folder into your program to test the application.
+
+To do that, open your Postman program, click on import and drag or drop the file. Then click on the import button.
+
 # Documentation
 
 If you want to see more informations about how this API works, access the following link (http://localhost:8080/swagger-ui/index.html) after starting the application.
